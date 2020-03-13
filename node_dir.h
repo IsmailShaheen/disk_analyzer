@@ -11,8 +11,9 @@ struct node_dir
     long long size;
     char *name;
 
-    node_dir *parent;
-    node_dir **childs;
+    NODE *parent;
+    NODE **childs;
+    short child_count;
 };
 
 NODE *make_node(
@@ -26,8 +27,11 @@ NODE *make_node(
     temp->level = level;
     temp->size = size;
     temp->name = name;
+    
     temp->parent = NULL;
-    temp->childs = NULL;
+    NODE *temp_child = NULL;
+    temp->childs = &temp_child;
+    temp->child_count = 0;
     return temp;
 }
 

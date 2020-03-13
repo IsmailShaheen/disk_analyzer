@@ -24,7 +24,8 @@ void add_child(NODE *node, TREE *tree)
         tree->root = node;
         tree->current = node;
     } else {
-        node->parent = tree->current->parent;
+        tree->current->childs[tree->current->child_count++] = node;
+        node->parent = tree->current;
     }
 }
 
