@@ -4,7 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include "tree.h"
 
+int glb_lvl= 0;
+TREE *tree; 
 static int
 display_info(const char *fpath, const struct stat *sb,
              int tflag, struct FTW *ftwbuf)
@@ -19,9 +22,32 @@ display_info(const char *fpath, const struct stat *sb,
     return 0;           /* To tell nftw() to continue */
 }
 
+static int
+append_tree(const char *fpath, const struct stat *sb,
+             int tflag, struct FTW *ftwbuf)
+{
+    NODE *node  = make_node(tflag,
+                            ftwbuf->level, 
+                            sb->st_size, 
+                            fpath + ftwbuf->base);
+    if (ftwbuf->level > glb_lvl)
+        add_child(node, tree);
+    
+    if (ftwbuf->level = glb_lvl)
+        add_child(node ->parent, tree);
+
+    if (ftwbuf->level < glb_lvl)
+        add_child(node->parent->parent, tree);
+    
+    
+
+    return 0;
+}
+
 int
 main(int argc, char *argv[])
 {
+    tree = make_tree();
     int flags = 0;
 
    if (argc > 2 && strchr(argv[2], 'd') != NULL)
@@ -29,7 +55,7 @@ main(int argc, char *argv[])
     if (argc > 2 && strchr(argv[2], 'p') != NULL)
         flags |= FTW_PHYS;
 
-   if (nftw((argc < 2) ? "." : argv[1], display_info, 20, flags)
+   if (nftw((argc < 2) ? "." : argv[1], append_tree, 20, flags)
             == -1) {
         perror("nftw");
         exit(EXIT_FAILURE);
