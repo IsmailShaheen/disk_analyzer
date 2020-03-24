@@ -1,7 +1,7 @@
 #ifndef _TREE_H
 #define _TREE_H
 
-#include "node_dir.h"
+#include "dir_node.h"
 #define TREE struct tree
 
 struct tree

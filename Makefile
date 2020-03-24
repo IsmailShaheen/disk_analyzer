@@ -1,4 +1,4 @@
-all: disk_analyzer.out
+all: diana
 
-disk_analyzer.out: main.c
-	gcc main.c -o disk_analyzer.out
+diana: main.c tree.h
+	gcc main.c -o diana

@@ -1,10 +1,10 @@
-#ifndef _NODE_DIR_H
-#define _NODE_DIR_H
+#ifndef _DIR_NODE_H
+#define _DIR_NODE_H
 
 #include "stdlib.h"
-#define NODE struct node_dir
+#define NODE struct dir_node
 
-struct node_dir
+struct dir_node
 {
     char type;
     short level;
@@ -35,4 +35,4 @@ NODE *make_node(
     return temp;
 }
 
-#endif  // _NODE_DIR_H
+#endif  // _DIR_NODE_H
