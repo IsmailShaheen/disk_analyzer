@@ -1,4 +1,11 @@
-all: disk_analyzer.out
+all: diana.out
 
-disk_analyzer.out: main.c
-	gcc main.c -o disk_analyzer.out
+diana.out: main.c tree.h
+	gcc -ggdb main.c -o diana.out
+
+.PHONY: clean
+clean:
+	rm -f diana.out
+
+run:
+	./diana.out
