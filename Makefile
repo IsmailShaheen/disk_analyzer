@@ -1,4 +1,11 @@
-all: diana
+all: diana.out
 
-diana: main.c tree.h
-	gcc main.c -o diana
+diana.out: main.c tree.h
+	gcc -ggdb main.c -o diana.out
+
+.PHONY: clean
+clean:
+	rm -f diana.out
+
+run:
+	./diana.out

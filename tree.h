@@ -24,8 +24,12 @@ void add_child(NODE *node, TREE *tree)
         tree->root = node;
         tree->current = node;
     } else {
-        tree->current->childs[tree->current->child_count++] = node;
         node->parent = tree->current;
+        if (tree->current->child_count == tree->current->child_cap) {
+            tree->current->childs = (NODE **)realloc(tree->current->childs, 2 * tree->current->child_cap * sizeof(NODE *));
+            tree->current->child_cap *= 2;
+        }
+        tree->current->childs[tree->current->child_count++] = node;
     }
 }
 

@@ -3,17 +3,19 @@
 
 #include "stdlib.h"
 #define NODE struct dir_node
+#define AVG_FILE_NUM 4
 
 struct dir_node
 {
-    char type;
-    short level;
+    unsigned char type;
+    unsigned short level;
     long long size;
-    char *name;
+    unsigned char *name;
 
     NODE *parent;
     NODE **childs;
-    short child_count;
+    unsigned short child_count;
+    unsigned short child_cap;
 };
 
 NODE *make_node(
@@ -29,9 +31,9 @@ NODE *make_node(
     temp->name = name;
     
     temp->parent = NULL;
-    NODE *temp_child = NULL;
-    temp->childs = &temp_child;
+    temp->childs = (NODE **)malloc(AVG_FILE_NUM * sizeof(NODE *));
     temp->child_count = 0;
+    temp->child_cap = AVG_FILE_NUM;
     return temp;
 }
 
