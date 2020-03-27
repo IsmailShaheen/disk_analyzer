@@ -7,7 +7,7 @@
 #include "tree.h"
 #include "test_tree.h"
 
-int glb_lvl= 0;
+int glb_lvl = 0;
 TREE *tree;
 TREE *test_tree;
 
@@ -30,14 +30,16 @@ append_tree(const char *fpath, const struct stat *sb,
              int tflag, struct FTW *ftwbuf)
 {
     char *name = strcat(fpath + ftwbuf->base, "\0");
+    char *name2 = (char *)malloc((strlen(name) + 1) * sizeof(char));
+    strcpy(name2, name);
     NODE *node  = make_node(tflag,
                             ftwbuf->level, 
                             sb->st_size, 
-                            name);
+                            name2);
 
     if (ftwbuf->level > glb_lvl || tree->root == NULL) {
         add_child(node, tree);
-    } else if (ftwbuf->level = glb_lvl) {
+    } else if (ftwbuf->level == glb_lvl) {
         tree->current = tree->current->parent;
         add_child(node, tree);
     } else if (ftwbuf->level < glb_lvl) {
