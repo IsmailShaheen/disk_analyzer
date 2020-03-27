@@ -29,19 +29,23 @@ static int
 append_tree(const char *fpath, const struct stat *sb,
              int tflag, struct FTW *ftwbuf)
 {
+    char *name = strcat(fpath + ftwbuf->base, "\0");
     NODE *node  = make_node(tflag,
                             ftwbuf->level, 
                             sb->st_size, 
-                            fpath + ftwbuf->base);
-    if (ftwbuf->level > glb_lvl)
-        add_child(node, tree);
-    
-    if (ftwbuf->level = glb_lvl)
-        add_child(node ->parent, tree);
+                            name);
 
-    if (ftwbuf->level < glb_lvl) 
-        add_child(node->parent->parent, tree);
+    if (ftwbuf->level > glb_lvl || tree->root == NULL) {
+        add_child(node, tree);
+    } else if (ftwbuf->level = glb_lvl) {
+        tree->current = tree->current->parent;
+        add_child(node, tree);
+    } else if (ftwbuf->level < glb_lvl) {
+        tree->current = tree->current->parent->parent;
+        add_child(node, tree);
+    }
     
+    tree->current = node;
     glb_lvl = ftwbuf->level;
 
     return 0;
@@ -51,7 +55,7 @@ int
 printfn (NODE * node)
 {
     for (int i = 0; i < node->level; i++)
-        printf("    ");
+        printf(" ");
     printf("%s\n", node->name);
     
     return 0;
@@ -74,6 +78,6 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    traverse_pre(test_tree, printfn);
+    traverse_pre(tree, printfn);
     exit(EXIT_SUCCESS);
 }
