@@ -10,7 +10,7 @@ struct dir_node
     unsigned char type;
     unsigned short level;
     long long size;
-    char *name;
+    const char *name;
 
     NODE *parent;
     NODE **childs;
@@ -23,7 +23,7 @@ make_node(
     char type,
     short level,
     long long size,
-    char *name)
+    const char *name)
 {
     NODE *temp = (NODE *)malloc(sizeof(NODE));
     temp->type = type;

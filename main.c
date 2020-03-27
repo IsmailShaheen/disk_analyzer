@@ -39,10 +39,10 @@ append_tree(const char *fpath, const struct stat *sb,
     if (ftwbuf->level = glb_lvl)
         add_child(node ->parent, tree);
 
-    if (ftwbuf->level < glb_lvl)
+    if (ftwbuf->level < glb_lvl) 
         add_child(node->parent->parent, tree);
     
-    
+    glb_lvl = ftwbuf->level;
 
     return 0;
 }
