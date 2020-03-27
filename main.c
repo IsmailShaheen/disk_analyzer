@@ -57,7 +57,7 @@ int
 printfn (NODE * node)
 {
     for (int i = 0; i < node->level; i++)
-        printf(" ");
+        printf("-");
     printf("%s\n", node->name);
     
     return 0;
