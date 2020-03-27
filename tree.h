@@ -10,7 +10,8 @@ struct tree
     NODE *current;
 };
 
-TREE *make_tree()
+TREE *
+make_tree()
 {
     TREE *temp = (TREE *)malloc(sizeof(TREE));
     temp->root = NULL;
@@ -18,7 +19,8 @@ TREE *make_tree()
     return temp;
 }
 
-void add_child(NODE *node, TREE *tree)
+void
+add_child(NODE *node, TREE *tree)
 {
     if (tree->root == NULL) {
         tree->root = node;
@@ -33,4 +35,27 @@ void add_child(NODE *node, TREE *tree)
     }
 }
 
-#endif
+static int
+traverse_pre_helper(NODE *root, int (*fn)(NODE *))
+{
+    if (root == NULL)
+        return 0;
+    
+    int fn_ret = fn(root);
+    if (fn_ret != 0)
+        return fn_ret;
+    
+    for (int i = 0; i < root->child_count; i++) {
+        traverse_pre_helper(root->childs[i], fn);
+    }
+    
+    return 0;
+}
+
+int
+traverse_pre(TREE *tree, int (*fn)(NODE *))
+{
+    return traverse_pre_helper(tree->root, fn);
+}
+
+#endif // _TREE_H

@@ -10,7 +10,7 @@ struct dir_node
     unsigned char type;
     unsigned short level;
     long long size;
-    unsigned char *name;
+    char *name;
 
     NODE *parent;
     NODE **childs;
@@ -18,7 +18,8 @@ struct dir_node
     unsigned short child_cap;
 };
 
-NODE *make_node(
+NODE *
+make_node(
     char type,
     short level,
     long long size,
