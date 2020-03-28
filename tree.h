@@ -58,4 +58,27 @@ traverse_pre(TREE *tree, int (*fn)(NODE *))
     return traverse_pre_helper(tree->root, fn);
 }
 
+static int
+traverse_post_helper(NODE *root, int (*fn)(NODE *))
+{
+    if (root == NULL)
+        return 0;
+    
+    for (int i = 0; i < root->child_count; i++) {
+        traverse_post_helper(root->childs[i], fn);
+    }
+    
+    int fn_ret = fn(root);
+    if (fn_ret != 0)
+        return fn_ret;
+    
+    return 0;
+}
+
+int
+traverse_post(TREE *tree, int (*fn)(NODE *))
+{
+    return traverse_post_helper(tree->root, fn);
+}
+
 #endif // _TREE_H
