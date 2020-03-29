@@ -1,32 +1,4 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the Qt Charts module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
-#include "donutbreakdownchart.h"
+#include "piechart.h"
 #include "mainslice.h"
 #include <QtCharts/QPieSlice>
 #include <QtCharts/QPieLegendMarker>
@@ -34,19 +6,17 @@
 QT_CHARTS_USE_NAMESPACE
 
 //![1]
-DonutBreakdownChart::DonutBreakdownChart(QGraphicsItem *parent, Qt::WindowFlags wFlags)
+PieChart::PieChart(QGraphicsItem *parent, Qt::WindowFlags wFlags)
     : QChart(QChart::ChartTypeCartesian, parent, wFlags)
 {
-    // create the series for main center pie
-    m_mainSeries = new QPieSeries();
-    m_mainSeries->setPieSize(0.6);
-    QChart::addSeries(m_mainSeries);
+    // Setting up visuals
     this->setAnimationOptions(QChart::AllAnimations);
+    this->legend()->setAlignment(Qt::AlignRight);
 }
 //![1]
 
 //![2]
-void DonutBreakdownChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor color)
+void PieChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor color)
 {
     QFont font("Arial", 8);
 
@@ -69,7 +39,7 @@ void DonutBreakdownChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor
     breakdownSeries->setLabelsVisible();
     const auto slices = breakdownSeries->slices();
     for (QPieSlice *slice : slices) {
-        color = color.lighter(115);
+        color = color.lighter(105);
         slice->setBrush(color);
         slice->setLabelFont(font);
     }
@@ -85,8 +55,47 @@ void DonutBreakdownChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor
 }
 //![2]
 
+void PieChart::setNode(NODE *node)
+{
+    root = node;
+    this->setTitle(root->name);
+
+    QChart::removeAllSeries();
+
+    // create the series for main center pie
+    m_mainSeries = new QPieSeries();
+    m_mainSeries->setPieSize(0.6);
+    QChart::addSeries(m_mainSeries);
+
+    // Setting up the sub serieses
+    for (int i = 0; i < root->child_count; i++) {
+        QPieSeries *series = new QPieSeries();
+        series->setName(root->childs[i]->name);
+        for (int j = 0; j < root->childs[i]->child_count; j++)
+            series->append(root->childs[i]->childs[j]->name, root->childs[i]->childs[j]->size);
+        this->addBreakdownSeries(series, Qt::red);
+    }
+
+    // QPieSeries *series2 = new QPieSeries();
+    // series2->setName("Renewables");
+    // series2->append("Wood fuels", 319663);
+    // series2->append("Hydro power", 45875);
+    // series2->append("Wind power", 1060);
+
+    // QPieSeries *series3 = new QPieSeries();
+    // series3->setName("Others");
+    // series3->append("Nuclear energy", 238789);
+    // series3->append("Import energy", 37802);
+    // series3->append("Other", 32441);
+}
+
+NODE *PieChart::node()
+{
+    return root;
+}
+
 //![3]
-void DonutBreakdownChart::recalculateAngles()
+void PieChart::recalculateAngles()
 {
     qreal angle = 0;
     const auto slices = m_mainSeries->slices();
@@ -100,7 +109,7 @@ void DonutBreakdownChart::recalculateAngles()
 //![3]
 
 //![4]
-void DonutBreakdownChart::updateLegendMarkers()
+void PieChart::updateLegendMarkers()
 {
     // go through all markers
     const auto allseries = series();

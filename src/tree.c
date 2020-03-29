@@ -1,6 +1,5 @@
 #include "stdlib.h"
 #include "tree.h"
-#include "dir_node.h"
 
 TREE *
 make_tree()

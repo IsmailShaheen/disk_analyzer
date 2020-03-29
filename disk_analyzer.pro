@@ -4,6 +4,7 @@
 
 TEMPLATE = app
 TARGET = disk_analyzer
+QMAKE_CC = g++
 INCLUDEPATH += . ./inc
 QT += widgets charts
 
@@ -19,9 +20,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += inc/dir_node.h inc/donutbreakdownchart.h inc/mainslice.h inc/tree.h
+HEADERS += inc/dir_node.h inc/mainslice.h inc/tree.h \
+    inc/piechart.h
 SOURCES += main.cpp \
            src/dir_node.c \
-           src/donutbreakdownchart.cpp \
            src/mainslice.cpp \
+           src/piechart.cpp \
            src/tree.c
