@@ -13,7 +13,8 @@
 #include "piechart.h"
 #include "treemodel.h"
 #include "tree.h"
-
+#define HEIGHT 500
+#define WIDTH 1000
 QT_CHARTS_USE_NAMESPACE
 
 int glb_lvl = 0;
@@ -53,18 +54,24 @@ main(int argc, char *argv[])
     treeView->setWindowTitle(QObject::tr("Disk Analyzer"));
     treeView->setAnimated(true);
     treeView->setIndentation(20);
-    treeView->setSortingEnabled(true);
     const QSize availableSize = treeView->screen()->availableGeometry().size();
     treeView->resize(availableSize / 2);
-    treeView->setColumnWidth(0, treeView->width() / 3);
+    //treeView->setColumnWidth(2, treeView->width() / 6);
+    treeView->setSortingEnabled(false);
+    treeView->sortByColumn(1,Qt::DescendingOrder);
     treeView->show();
 
     QSplitter *splitter = new QSplitter;
     splitter->addWidget(treeView);
     splitter->addWidget(chartView);
+    QList<int> list;
+    list.append(WIDTH/3);
+    list.append(2*(WIDTH/3));
+    splitter->setSizes(list);
     QMainWindow window;
+    //window.connect(treeView,SIGNAL())
     window.setCentralWidget(splitter);
-    window.resize(800, 500);
+    window.resize(WIDTH, HEIGHT);
     window.show();
 
     return a.exec();
