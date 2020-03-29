@@ -26,6 +26,7 @@ public:
 
 private:
     void setupModelData(const TREE *tree, TreeItem *parent);
+    void setupModelDataHelper(const NODE *root, QVector<TreeItem*> parents, QVector<int> glbl_lvl);
 
     TreeItem *rootItem;
 };

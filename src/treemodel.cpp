@@ -4,7 +4,7 @@ TreeModel::TreeModel(const TREE *tree, QObject *parent)
     : QAbstractItemModel(parent)
 {
     rootItem = new TreeItem({tr("path"), tr("size"), tr("type")});
-    setupModelData(tree, rootItem);
+    setupModelData(tree,rootItem);
 }
 
 TreeModel::~TreeModel()
@@ -112,7 +112,7 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation,
 }
 
 
-void TreeModel::setupModelData(const TREE *tree, TreeItem *parent)
+/*void TreeModel::setupModelData(const TREE *tree, TreeItem *parent)
 {
     QVector<TreeItem*> parents;
     QVector<int> glbl_lvl;
@@ -154,4 +154,45 @@ void TreeModel::setupModelData(const TREE *tree, TreeItem *parent)
         ++number;
     }
 }
+*/
+void TreeModel::setupModelDataHelper(const NODE *root, QVector<TreeItem*> parents, QVector<int> glbl_lvl)
+{
+    if (root == NULL)
+        return;
+    QVector<QVariant> columnData;
+    columnData.reserve(3);
+    columnData << root->name;
+    columnData << root->size;
+    columnData << root->type;
 
+    if (root->level > glbl_lvl.last())
+    {
+        if (parents.last()->childCount() > 0)
+        {
+            parents << parents.last()->child(parents.last()->childCount()-1);
+        }
+    }else {
+        while (root->level < glbl_lvl.last() && parents.count() > 0) {
+            parents.pop_back();
+            glbl_lvl.pop_back();
+        }
+    }
+
+    // Append a new item to the current parent's list of children.
+    parents.last()->appendChild(new TreeItem(columnData, parents.last()));
+
+    for (int i = 0; i < root->child_count; i++) {
+        setupModelDataHelper(root->childs[i], parents, glbl_lvl);
+    }
+
+}
+
+
+void TreeModel::setupModelData(const TREE *tree,TreeItem *parent)
+{   
+    QVector<TreeItem*> parents;
+    QVector<int> glbl_lvl;
+    parents << parent;
+    glbl_lvl << 0;
+    setupModelDataHelper(tree->root, parents, glbl_lvl);
+}
