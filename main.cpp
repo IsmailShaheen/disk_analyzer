@@ -7,6 +7,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTreeView>
+#include <QtWidgets/QSplitter>
 #include <QtCharts/QChartView>
 #include <QtGui/QScreen>
 #include "piechart.h"
@@ -47,19 +48,22 @@ main(int argc, char *argv[])
     QChartView *chartView = new QChartView(pie);
     chartView->setRenderHint(QPainter::Antialiasing);
 
-    QTreeView view;
-    view.setModel(&model);
-    view.setWindowTitle(QObject::tr("Disk Analyzer"));
-    view.setAnimated(true);
-    view.setIndentation(20);
-    view.setSortingEnabled(true);
-    const QSize availableSize = view.screen()->availableGeometry().size();
-    view.resize(availableSize / 2);
-    view.setColumnWidth(0, view.width() / 3);
-    view.show();
+    QTreeView *treeView = new QTreeView;
+    treeView->setModel(&model);
+    treeView->setWindowTitle(QObject::tr("Disk Analyzer"));
+    treeView->setAnimated(true);
+    treeView->setIndentation(20);
+    treeView->setSortingEnabled(true);
+    const QSize availableSize = treeView->screen()->availableGeometry().size();
+    treeView->resize(availableSize / 2);
+    treeView->setColumnWidth(0, treeView->width() / 3);
+    treeView->show();
 
+    QSplitter *splitter = new QSplitter;
+    splitter->addWidget(treeView);
+    splitter->addWidget(chartView);
     QMainWindow window;
-    window.setCentralWidget(chartView);
+    window.setCentralWidget(splitter);
     window.resize(800, 500);
     window.show();
 
