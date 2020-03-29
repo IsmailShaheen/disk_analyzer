@@ -3,7 +3,7 @@
 TreeModel::TreeModel(const TREE *tree, QObject *parent)
     : QAbstractItemModel(parent)
 {
-    rootItem = new TreeItem({tr("path"), tr("size (bytes)"), tr("type")});
+    rootItem = new TreeItem({tr("path"), tr("size"), tr("type")});
     setupModelData(tree,rootItem);
 }
 
@@ -111,50 +111,6 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation,
     return QVariant();
 }
 
-
-/*void TreeModel::setupModelData(const TREE *tree, TreeItem *parent)
-{
-    QVector<TreeItem*> parents;
-    QVector<int> glbl_lvl;
-    parents << parent;
-    glbl_lvl << 0;
-
-    int number = 0;
-
-    while (number < tree->root->child_count) {
-        int level = tree->root->level;
-
-        if (tree->root!=NULL) {
-
-            QVector<QVariant> columnData;
-            columnData.reserve(3);
-            columnData << tree->root->name;
-            columnData << tree->root->size;
-            columnData << tree->root->type;
-
-            if (level > glbl_lvl.last()) {
-                // The last child of the current parent is now the new parent
-                // unless the current parent has no children.
-
-                if (parents.last()->childCount() > 0) {
-                    parents << parents.last()->child(parents.last()->childCount()-1);
-                    glbl_lvl << level;
-                }
-            } else {
-                while (level < glbl_lvl.last() && parents.count() > 0) {
-                    parents.pop_back();
-                    glbl_lvl.pop_back();
-                }
-            }
-
-
-            // Append a new item to the current parent's list of children.
-            parents.last()->appendChild(new TreeItem(columnData, parents.last()));
-        }
-        ++number;
-    }
-}
-*/
 void TreeModel::setupModelDataHelper(const NODE *root, QVector<TreeItem*> parents, QVector<int> glbl_lvl)
 {
     if (root == NULL)
@@ -162,7 +118,7 @@ void TreeModel::setupModelDataHelper(const NODE *root, QVector<TreeItem*> parent
     QVector<QVariant> columnData;
     columnData.reserve(3);
     columnData << root->name;
-    columnData << root->size;
+    columnData << get_size((NODE *)root);
     columnData << (root->type == 0 ? "file" :
                    root->type == 1 ? "directory" :
                    "other");

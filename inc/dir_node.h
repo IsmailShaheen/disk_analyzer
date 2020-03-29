@@ -24,4 +24,7 @@ make_node(
     long long size,
     const char *name);
 
+char *
+get_size(NODE *node);
+
 #endif  // _DIR_NODE_H
