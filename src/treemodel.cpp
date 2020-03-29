@@ -3,7 +3,7 @@
 TreeModel::TreeModel(const TREE *tree, QObject *parent)
     : QAbstractItemModel(parent)
 {
-    rootItem = new TreeItem({tr("path"), tr("size"), tr("type")});
+    rootItem = new TreeItem({tr("path"), tr("size (bytes)"), tr("type")});
     setupModelData(tree,rootItem);
 }
 
@@ -163,7 +163,9 @@ void TreeModel::setupModelDataHelper(const NODE *root, QVector<TreeItem*> parent
     columnData.reserve(3);
     columnData << root->name;
     columnData << root->size;
-    columnData << root->type;
+    columnData << (root->type == 0 ? "file" :
+                   root->type == 1 ? "directory" :
+                   "other");
 
     if (root->level > glbl_lvl.last())
     {

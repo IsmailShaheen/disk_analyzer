@@ -41,7 +41,7 @@ void PieChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor color, qre
     for (QPieSlice *slice : slices) {
         color = color.lighter(102);
         slice->setBrush(color);
-        slice->setLabelFont(font);
+        slice->setLabelFont(font); 
     }
 
     // add the series to the chart
@@ -66,12 +66,14 @@ void PieChart::setNode(NODE *node)
     QChart::addSeries(m_mainSeries);
 
     // Setting up the sub serieses
+    QColor color = Qt::red;
     for (int i = 0; i < root->child_count; i++) {
         QPieSeries *series = new QPieSeries();
         series->setName(root->childs[i]->name);
         for (int j = 0; j < root->childs[i]->child_count; j++)
             series->append(root->childs[i]->childs[j]->name, root->childs[i]->childs[j]->size);
-        this->addBreakdownSeries(series, Qt::red, root->childs[i]->size);
+        color.setGreen((color.green() + i * 15) % 255);
+        this->addBreakdownSeries(series, color, root->childs[i]->size);
     }
 }
 
