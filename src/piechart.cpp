@@ -11,7 +11,7 @@ PieChart::PieChart(QGraphicsItem *parent, Qt::WindowFlags wFlags)
 {
     // Setting up visuals
     this->setAnimationOptions(QChart::AllAnimations);
-    this->legend()->setAlignment(Qt::AlignRight);
+    this->legend()->setVisible(false);
 }
 //![1]
 

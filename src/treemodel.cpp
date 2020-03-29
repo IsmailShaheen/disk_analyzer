@@ -1,6 +1,6 @@
-#include "TreeModel.h"
+#include "treemodel.h"
 
-TreeModel::TreeModel(const Tree &tree, QObject *parent)
+TreeModel::TreeModel(const TREE *tree, QObject *parent)
     : QAbstractItemModel(parent)
 {
     rootItem = new TreeItem({tr("path"), tr("size"), tr("type")});
@@ -112,7 +112,7 @@ QVariant TreeModel::headerData(int section, Qt::Orientation orientation,
 }
 
 
-void TreeModel::setupModelData(const TREE &tree, TreeItem *parent)
+void TreeModel::setupModelData(const TREE *tree, TreeItem *parent)
 {
     QVector<TreeItem*> parents;
     QVector<int> glbl_lvl;

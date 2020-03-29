@@ -1,8 +1,8 @@
 #ifndef TREEITEM_H
 #define TREEITEM_H
 
-#include<QVector>
-#include <QVariant>
+#include <QtCore/QVector>
+#include <QtCore/QVariant>
 
 class TreeItem
 {
