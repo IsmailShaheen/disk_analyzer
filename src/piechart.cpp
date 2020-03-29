@@ -97,5 +97,4 @@ void PieChart::updateChart(QPieSlice *slice)
     if (root->childs[index]->child_count != 0)
         return
     setNode(root->childs[index]);
-    emit chartUpdated();
 }
