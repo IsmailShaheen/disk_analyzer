@@ -1,4 +1,5 @@
 #include "stdlib.h"
+#include "string.h"
 #include "tree.h"
 
 TREE *
@@ -32,6 +33,10 @@ make_test_tree()
 void
 add_child(NODE *node, TREE *tree)
 {
+    // checks for the stupid kcore file that is not human readable and reports
+    // an invalid size (for physical memory representation)
+    if (strcmp((const char *)node->name, "kcore") == 0)
+        node->size = 0;
     if (tree->root == NULL) {
         tree->root = node;
         tree->current = node;
