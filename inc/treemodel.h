@@ -1,3 +1,4 @@
+// Class for the entire tree
 #ifndef TREEMODEL_H
 #define TREEMODEL_H
 

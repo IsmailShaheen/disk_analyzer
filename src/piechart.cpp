@@ -5,7 +5,6 @@
 
 QT_CHARTS_USE_NAMESPACE
 
-//![1]
 PieChart::PieChart(QGraphicsItem *parent, Qt::WindowFlags wFlags)
     : QChart(QChart::ChartTypeCartesian, parent, wFlags)
 {
@@ -13,9 +12,7 @@ PieChart::PieChart(QGraphicsItem *parent, Qt::WindowFlags wFlags)
     this->setAnimationOptions(QChart::AllAnimations);
     this->legend()->setVisible(false);
 }
-//![1]
 
-//![2]
 void PieChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor color, qreal sum)
 {
     QFont font("Arial", 8);
@@ -50,7 +47,6 @@ void PieChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor color, qre
     // recalculate breakdown donut segments
     recalculateAngles();
 }
-//![2]
 
 void PieChart::setNode(NODE *node)
 {

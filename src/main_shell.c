@@ -1,3 +1,5 @@
+// This file was the early stage of the back end development and a sandbax area
+// It works from terminal and can be compiled and linked using the make file in the same directory
 #define _XOPEN_SOURCE 500
 #include <ftw.h>
 #include <stdio.h>

@@ -1,3 +1,4 @@
+// Class for the whole pie chart
 #ifndef PIECHART_H
 #define PIECHART_H
 

@@ -1,3 +1,4 @@
+// Class for a single tree item
 #ifndef TREEITEM_H
 #define TREEITEM_H
 
