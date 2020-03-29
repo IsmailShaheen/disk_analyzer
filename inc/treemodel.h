@@ -1,8 +1,8 @@
 #ifndef TREEMODEL_H
 #define TREEMODEL_H
 
-#include <QAbstractItemModel>
-#include "TreeItem.h"
+#include <QtCore/QAbstractItemModel>
+#include "treeitem.h"
 #include "tree.h"
 
 
@@ -11,7 +11,7 @@ class TreeModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
-    explicit TreeModel(const TREE &tree, QObject *parent = nullptr);
+    explicit TreeModel(const TREE *tree, QObject *parent = nullptr);
     ~TreeModel();
 
     QVariant data(const QModelIndex &index, int role) const override;
@@ -25,7 +25,7 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
 private:
-    void setupModelData(const QStringList &lines, TreeItem *parent);
+    void setupModelData(const TREE *tree, TreeItem *parent);
 
     TreeItem *rootItem;
 };

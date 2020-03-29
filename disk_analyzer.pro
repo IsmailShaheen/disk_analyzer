@@ -6,7 +6,7 @@ TEMPLATE = app
 TARGET = disk_analyzer
 QMAKE_CC = g++
 INCLUDEPATH += . ./inc
-QT += widgets charts
+QT += widgets charts core
 
 # The following define makes your compiler warn you if you use any
 # feature of Qt which has been marked as deprecated (the exact warnings
@@ -21,9 +21,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Input
 HEADERS += inc/dir_node.h inc/mainslice.h inc/tree.h \
-    inc/piechart.h
+    inc/piechart.h inc/treemodel.h inc/treeitem.h
 SOURCES += main.cpp \
            src/dir_node.c \
            src/mainslice.cpp \
            src/piechart.cpp \
-           src/tree.c
+           src/tree.c \
+           src/treemodel.cpp \
+           src/treeitem.cpp

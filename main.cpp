@@ -6,8 +6,11 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTreeView>
 #include <QtCharts/QChartView>
+#include <QtGui/QScreen>
 #include "piechart.h"
+#include "treemodel.h"
 #include "tree.h"
 
 QT_CHARTS_USE_NAMESPACE
@@ -40,10 +43,23 @@ main(int argc, char *argv[])
     // Frontend
     PieChart *pie = new PieChart();
     pie->setNode(tree->root);
+    TreeModel model(tree);
 
-    QMainWindow window;
     QChartView *chartView = new QChartView(pie);
     chartView->setRenderHint(QPainter::Antialiasing);
+
+    QTreeView view;
+    view.setModel(&model);
+    view.setWindowTitle(QObject::tr("Disk Analyzer"));
+    view.setAnimated(true);
+    view.setIndentation(20);
+    view.setSortingEnabled(true);
+    const QSize availableSize = view.screen()->availableGeometry().size();
+    view.resize(availableSize / 2);
+    view.setColumnWidth(0, view.width() / 3);
+    view.show();
+
+    QMainWindow window;
     window.setCentralWidget(chartView);
     window.resize(800, 500);
     window.show();

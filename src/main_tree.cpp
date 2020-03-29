@@ -1,8 +1,7 @@
 
-#include "TreeModel.h"
+#include "treemodel.h"
 #include <QScreen>
 #include <QApplication>
-
 #include <QTreeView>
 
 int main(int argc, char *argv[])

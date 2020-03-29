@@ -1,4 +1,4 @@
-#include "TreeItem.h"
+#include "treeitem.h"
 
 //The constructor is only used to record the item's parent and the data associated with each column.
 TreeItem::TreeItem(const QVector<QVariant> &data, TreeItem *parent)

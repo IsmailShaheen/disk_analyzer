@@ -11,7 +11,7 @@ class PieChart : public QChart
 {
 public:
     PieChart(QGraphicsItem *parent = 0, Qt::WindowFlags wFlags = 0);
-    void addBreakdownSeries(QPieSeries *series, QColor color);
+    void addBreakdownSeries(QPieSeries *series, QColor color, qreal sum = 0);
     void setNode(NODE *node);
     NODE *node();
 
