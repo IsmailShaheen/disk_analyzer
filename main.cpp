@@ -21,6 +21,8 @@ TREE *tree;
 int
 append_tree(const char *fpath, const struct stat *sb,
             int tflag, struct FTW *ftwbuf);
+int 
+set_size(NODE *node);
 
 int
 main(int argc, char *argv[])
@@ -39,6 +41,7 @@ main(int argc, char *argv[])
     if (nftw((argc < 2) ? "." : argv[1], append_tree, 20, flags) == -1) {
         perror("nftw");
     }
+    traverse_post(tree, set_size);
 
     // Frontend
     PieChart *pie = new PieChart();
@@ -92,5 +95,14 @@ append_tree(const char *fpath, const struct stat *sb,
     tree->current = node;
     glb_lvl = ftwbuf->level;
 
+    return 0;
+}
+
+int 
+set_size(NODE *node)
+{
+    for (int i = 0; i < node->child_count; i++)
+        node->size += node->childs[i]->size;
+    
     return 0;
 }

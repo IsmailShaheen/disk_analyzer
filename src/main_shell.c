@@ -22,9 +22,6 @@ int
 set_size (NODE * node);
 
 int
-size (NODE * node);
-
-int
 main(int argc, char *argv[])
 {
     test_tree = make_test_tree();
@@ -40,8 +37,8 @@ main(int argc, char *argv[])
         perror("nftw");
         exit(EXIT_FAILURE);
     }
-   // traverse_post(tree, set_size);
-    size(tree->root);
+
+    traverse_post(tree, set_size);
     traverse_pre(tree, printfn);
     exit(EXIT_SUCCESS);
 }
@@ -102,20 +99,7 @@ int
 set_size(NODE *node)
 {
     for (int i = 0; i < node->child_count; i++)
-    {
         node->size += node->childs[i]->size;
-    }
+    
     return 0;
-}
-
-int 
-size (NODE *root)
-{
-    if (root == NULL)
-        return 0;
-    for (int i = 0; i < root->child_count; i++)
-    {
-        root->size += size(root->childs[i]);
-    }
-    return root->size;
 }
