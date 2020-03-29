@@ -16,14 +16,14 @@ PieChart::PieChart(QGraphicsItem *parent, Qt::WindowFlags wFlags)
 //![1]
 
 //![2]
-void PieChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor color)
+void PieChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor color, qreal sum)
 {
     QFont font("Arial", 8);
 
     // add breakdown series as a slice to center pie
     MainSlice *mainSlice = new MainSlice(breakdownSeries);
     mainSlice->setName(breakdownSeries->name());
-    mainSlice->setValue(breakdownSeries->sum());
+    mainSlice->setValue((sum == 0 ? breakdownSeries->sum() : sum));
     m_mainSeries->append(mainSlice);
 
     // customize the slice
@@ -65,6 +65,7 @@ void PieChart::setNode(NODE *node)
     // create the series for main center pie
     m_mainSeries = new QPieSeries();
     m_mainSeries->setPieSize(0.6);
+    m_mainSeries->setHoleSize(0.2);
     QChart::addSeries(m_mainSeries);
 
     // Setting up the sub serieses
@@ -73,20 +74,8 @@ void PieChart::setNode(NODE *node)
         series->setName(root->childs[i]->name);
         for (int j = 0; j < root->childs[i]->child_count; j++)
             series->append(root->childs[i]->childs[j]->name, root->childs[i]->childs[j]->size);
-        this->addBreakdownSeries(series, Qt::red);
+        this->addBreakdownSeries(series, Qt::red, root->childs[i]->size);
     }
-
-    // QPieSeries *series2 = new QPieSeries();
-    // series2->setName("Renewables");
-    // series2->append("Wood fuels", 319663);
-    // series2->append("Hydro power", 45875);
-    // series2->append("Wind power", 1060);
-
-    // QPieSeries *series3 = new QPieSeries();
-    // series3->setName("Others");
-    // series3->append("Nuclear energy", 238789);
-    // series3->append("Import energy", 37802);
-    // series3->append("Other", 32441);
 }
 
 NODE *PieChart::node()
