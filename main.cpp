@@ -69,7 +69,7 @@ main(int argc, char *argv[])
     list.append(2*(WIDTH/3));
     splitter->setSizes(list);
     QMainWindow window;
-    //window.connect(treeView,SIGNAL())
+    //window.connect(treeView,treeView->expanded(treeView->selectionModel()->currentIndex()),chartView, chartView->)
     window.setCentralWidget(splitter);
     window.resize(WIDTH, HEIGHT);
     window.show();
