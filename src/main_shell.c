@@ -22,6 +22,9 @@ int
 set_size (NODE * node);
 
 int
+size (NODE * node);
+
+int
 main(int argc, char *argv[])
 {
     test_tree = make_test_tree();
@@ -30,7 +33,7 @@ main(int argc, char *argv[])
 
     if (argc > 2 && strchr(argv[2], 'd') != NULL)
         flags |= FTW_DEPTH;
-    if (argc > 2 && strchr(argv[2], 'p') != NULL)
+    //if (argc > 2 && strchr(argv[2], 'p') != NULL)
         flags |= FTW_PHYS;
 
     if (nftw((argc < 2) ? "." : argv[1], append_tree, 20, flags) == -1) {
@@ -38,7 +41,9 @@ main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    // traverse_pre(tree, printfn);
     traverse_post(tree, set_size);
+    //size(tree->root);
     traverse_pre(tree, printfn);
     exit(EXIT_SUCCESS);
 }
@@ -75,7 +80,8 @@ append_tree(const char *fpath, const struct stat *sb,
         tree->current = tree->current->parent;
         add_child(node, tree);
     } else if (ftwbuf->level < glb_lvl) {
-        tree->current = tree->current->parent->parent;
+        for (int i = 0; i < (glb_lvl - ftwbuf->level) + 1; i++)
+            tree->current = tree->current->parent;
         add_child(node, tree);
     }
     
@@ -89,7 +95,7 @@ int
 printfn (NODE * node)
 {
     for (int i = 0; i < node->level; i++)
-        printf("-");
+        printf("----");
     printf("%s__%iB\n", node->name, node->size);
     
     return 0;
@@ -102,4 +108,14 @@ set_size(NODE *node)
         node->size += node->childs[i]->size;
     
     return 0;
+}
+
+int 
+size (NODE *root)
+{
+    if (root == NULL)
+        return 0;
+    for (int i = 0; i < root->child_count; i++)
+        root->size += size(root->childs[i]);
+    return root->size;
 }

@@ -4,7 +4,7 @@
 NODE *
 make_node(
     char type,
-    short level,
+    unsigned short level,
     long long size,
     const char *name)
 {

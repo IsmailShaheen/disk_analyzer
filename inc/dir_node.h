@@ -6,7 +6,7 @@
 
 struct dir_node
 {
-    unsigned char type;
+    char type;
     unsigned short level;
     long long size;
     const char *name;
@@ -20,7 +20,7 @@ struct dir_node
 NODE *
 make_node(
     char type,
-    short level,
+    unsigned short level,
     long long size,
     const char *name);
 

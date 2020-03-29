@@ -48,6 +48,7 @@ public:
 
 public Q_SLOTS:
     void updateLabel();
+    void showLabel(bool state);
 
 private:
     QPieSeries *m_breakdownSeries;

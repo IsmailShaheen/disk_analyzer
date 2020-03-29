@@ -32,11 +32,7 @@ main(int argc, char *argv[])
     // Backend
     tree = make_tree();
     int flags = 0;
-
-    if (argc > 2 && strchr(argv[2], 'd') != NULL)
-        flags |= FTW_DEPTH;
-    if (argc > 2 && strchr(argv[2], 'p') != NULL)
-        flags |= FTW_PHYS;
+    flags |= FTW_PHYS;
 
     if (nftw((argc < 2) ? "." : argv[1], append_tree, 20, flags) == -1) {
         perror("nftw");
@@ -88,7 +84,8 @@ append_tree(const char *fpath, const struct stat *sb,
         tree->current = tree->current->parent;
         add_child(node, tree);
     } else if (ftwbuf->level < glb_lvl) {
-        tree->current = tree->current->parent->parent;
+        for (int i = 0; i < (glb_lvl - ftwbuf->level) + 1; i++)
+            tree->current = tree->current->parent;
         add_child(node, tree);
     }
     

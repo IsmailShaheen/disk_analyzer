@@ -28,18 +28,18 @@ void PieChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor color, qre
 
     // customize the slice
     mainSlice->setBrush(color);
-    mainSlice->setLabelVisible();
-    mainSlice->setLabelColor(Qt::white);
-    mainSlice->setLabelPosition(QPieSlice::LabelInsideHorizontal);
+    mainSlice->setLabelColor(Qt::black);
+    mainSlice->setLabelPosition(QPieSlice::LabelOutside);
+    mainSlice->setLabelArmLengthFactor(0.7);
     mainSlice->setLabelFont(font);
 
     // position and customize the breakdown series
     breakdownSeries->setPieSize(0.8);
-    breakdownSeries->setHoleSize(0.65);
-    breakdownSeries->setLabelsVisible();
+    breakdownSeries->setHoleSize(0.55);
+    breakdownSeries->setLabelsVisible(false);
     const auto slices = breakdownSeries->slices();
     for (QPieSlice *slice : slices) {
-        color = color.lighter(105);
+        color = color.lighter(102);
         slice->setBrush(color);
         slice->setLabelFont(font);
     }
@@ -49,9 +49,6 @@ void PieChart::addBreakdownSeries(QPieSeries *breakdownSeries, QColor color, qre
 
     // recalculate breakdown donut segments
     recalculateAngles();
-
-    // update customize legend markers
-    updateLegendMarkers();
 }
 //![2]
 
@@ -64,8 +61,8 @@ void PieChart::setNode(NODE *node)
 
     // create the series for main center pie
     m_mainSeries = new QPieSeries();
-    m_mainSeries->setPieSize(0.6);
-    m_mainSeries->setHoleSize(0.2);
+    m_mainSeries->setPieSize(0.5);
+    m_mainSeries->setHoleSize(0.25);
     QChart::addSeries(m_mainSeries);
 
     // Setting up the sub serieses
@@ -96,27 +93,3 @@ void PieChart::recalculateAngles()
     }
 }
 //![3]
-
-//![4]
-void PieChart::updateLegendMarkers()
-{
-    // go through all markers
-    const auto allseries = series();
-    for (QAbstractSeries *series : allseries) {
-        const auto markers = legend()->markers(series);
-        for (QLegendMarker *marker : markers) {
-            QPieLegendMarker *pieMarker = qobject_cast<QPieLegendMarker *>(marker);
-            if (series == m_mainSeries) {
-                // hide markers from main series
-                pieMarker->setVisible(false);
-            } else {
-                // modify markers from breakdown series
-                pieMarker->setLabel(QString("%1 %2%")
-                                    .arg(pieMarker->slice()->label())
-                                    .arg(pieMarker->slice()->percentage() * 100, 0, 'f', 2));
-                pieMarker->setFont(QFont("Arial", 8));
-            }
-        }
-    }
-}
-//![4]

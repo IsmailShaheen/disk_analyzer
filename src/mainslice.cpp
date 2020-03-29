@@ -37,6 +37,7 @@ MainSlice::MainSlice(QPieSeries *breakdownSeries, QObject *parent)
       m_breakdownSeries(breakdownSeries)
 {
     connect(this, &MainSlice::percentageChanged, this, &MainSlice::updateLabel);
+    connect(this, &MainSlice::hovered, this, &MainSlice::showLabel);
 }
 //![1]
 
@@ -55,12 +56,15 @@ QString MainSlice::name() const
     return m_name;
 }
 
-//![2]
 void MainSlice::updateLabel()
 {
     this->setLabel(QString("%1 %2%").arg(m_name).arg(percentage() * 100, 0, 'f', 2));
 }
-//![2]
+
+void MainSlice::showLabel(bool state)
+{
+    this->setLabelVisible(state);
+}
 
 #include "moc_mainslice.cpp"
 
