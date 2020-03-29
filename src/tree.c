@@ -1,6 +1,7 @@
 #include "stdlib.h"
 #include "string.h"
 #include "tree.h"
+#define MAX_FILE_SIZE 0x10000000000 // 1TB
 
 TREE *
 make_tree()
@@ -35,7 +36,8 @@ add_child(NODE *node, TREE *tree)
 {
     // checks for the stupid kcore file that is not human readable and reports
     // an invalid size (for physical memory representation)
-    if (strcmp((const char *)node->name, "kcore") == 0)
+    // or any weird file greater than 1 TB
+    if ((strcmp((const char *)node->name, "kcore") == 0) || (node->size > MAX_FILE_SIZE))
         node->size = 0;
     if (tree->root == NULL) {
         tree->root = node;

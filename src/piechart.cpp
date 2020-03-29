@@ -61,6 +61,7 @@ void PieChart::setNode(NODE *node)
 
     // create the series for main center pie
     m_mainSeries = new QPieSeries();
+    connect(this->m_mainSeries, &QPieSeries::clicked, this, &PieChart::updateChart);
     m_mainSeries->setPieSize(0.5);
     m_mainSeries->setHoleSize(0.25);
     QChart::addSeries(m_mainSeries);
@@ -82,7 +83,6 @@ NODE *PieChart::node()
     return root;
 }
 
-//![3]
 void PieChart::recalculateAngles()
 {
     qreal angle = 0;
@@ -94,4 +94,12 @@ void PieChart::recalculateAngles()
         breakdownSeries->setPieEndAngle(angle);
     }
 }
-//![3]
+
+void PieChart::updateChart(QPieSlice *slice)
+{
+    int index = m_mainSeries->slices().indexOf(slice);
+    if (root->childs[index]->child_count != 0)
+        return
+    setNode(root->childs[index]);
+    emit chartUpdated();
+}

@@ -48,6 +48,7 @@ main(int argc, char *argv[])
 
     QChartView *chartView = new QChartView(pie);
     chartView->setRenderHint(QPainter::Antialiasing);
+    //pie->setNode(tree->root->childs[0]);
 
     QTreeView *treeView = new QTreeView;
     treeView->setModel(&model);
@@ -59,7 +60,7 @@ main(int argc, char *argv[])
     //treeView->setColumnWidth(2, treeView->width() / 6);
     treeView->setSortingEnabled(false);
     treeView->sortByColumn(1,Qt::DescendingOrder);
-    treeView->show();
+    //treeView->show();
 
     QSplitter *splitter = new QSplitter;
     splitter->addWidget(treeView);
