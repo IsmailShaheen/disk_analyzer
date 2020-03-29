@@ -1,6 +1,8 @@
 // The main can be compiled using qmack and the provided .pro file to produce a makefile
 // The make file can then be used to finish the linking
-// QT 5.14.1 is a prerequiste
+// QT 5.14.1 is a prerequiste for building and (execution for now)
+// There is a separate executeable file disk_analyzer but it links dynamically to Qt libraries
+// Remeber to pass the desired starting path or it will start form {pwd}
 #define _XOPEN_SOURCE 500
 #include <ftw.h>
 #include <stdio.h>
